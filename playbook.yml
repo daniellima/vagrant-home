@@ -60,13 +60,26 @@
     - name: add docker group
       group:
         name: docker
-    - name: Enable docker on systemd
-      service:
-        name: docker
-        state: started
-        enabled: true
     - name: Add vagrant to docker group # this allow calling docker wihout sudo
       user:
         name: vagrant
         groups: docker
         append: yes
+    - name: Get docker daemon.json file
+      set_fact:
+        docker_config: "{{ lookup('file', '/etc/docker/daemon.json')|from_json }}"
+    - name: Set new bip to docker config
+      set_fact:
+        docker_config: "{{ docker_config|combine({'bip': '192.168.1.5/24'}) }}"
+    - name: Dump new configuration
+      copy:
+        content: "{{ docker_config | to_nice_json }}"
+        dest: /etc/docker/daemon.json
+    - name: Enable docker on systemd
+      service:
+        name: docker
+        state: restarted
+        enabled: true
+
+
+
