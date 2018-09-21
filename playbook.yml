@@ -1,6 +1,7 @@
 ---
 
-- hosts: all
+- name: Basic package install and checks
+  hosts: all
   tasks:
     - name: verify internet connectivity
       wait_for:
@@ -18,7 +19,12 @@
         - python36
         - python
         - python-pip
+        - unzip
+        - docker
 
+- name: Configure python3 on CentOS
+  hosts: all
+  tasks:
     - name: install pip for python 3.6
       command: "python36 -m ensurepip"
 
@@ -32,3 +38,35 @@
 
     - name: install pipenv
       command: 'python36 -m pip install pipenv'
+
+- name: Install Terraform
+  hosts: all
+  vars:
+    terraform_temp_zip_path: /tmp/terraform.zip
+  tasks:
+    - name: fetch Terraform
+      get_url:
+        url: https://releases.hashicorp.com/terraform/0.11.8/terraform_0.11.8_linux_amd64.zip
+        dest: "{{ terraform_temp_zip_path }}"
+    - name: Unzip terraform binary
+      unarchive:
+        src: "{{ terraform_temp_zip_path }}"
+        dest: /usr/local/bin
+        remote_src: yes
+
+- name: Configure docker
+  hosts: all
+  tasks:
+    - name: add docker group
+      group:
+        name: docker
+    - name: Enable docker on systemd
+      service:
+        name: docker
+        state: started
+        enabled: true
+    - name: Add vagrant to docker group # this allow calling docker wihout sudo
+      user:
+        name: vagrant
+        groups: docker
+        append: yes
