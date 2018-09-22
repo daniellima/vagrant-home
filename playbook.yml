@@ -22,6 +22,22 @@
         - unzip
         - docker
 
+- name: Bring private and public keys from the host to the guest
+  hosts: all
+  tasks:
+    - name: copy key files to the guest
+      copy:
+        remote_src: yes
+        src: /ssh/{{ item }}
+        dest: /home/vagrant/.ssh/{{ item }}
+        mode: 0700
+        owner: vagrant
+        group: vagrant
+      loop:
+        - id_rsa
+        - id_rsa.pub
+
+
 - name: Configure python3 on CentOS
   hosts: all
   tasks:
