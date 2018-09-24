@@ -21,6 +21,8 @@
         - python-pip
         - unzip
         - docker
+        - nodejs
+        - npm
 
 - name: Bring private and public keys from the host to the guest
   hosts: all
@@ -96,6 +98,10 @@
         name: docker
         state: restarted
         enabled: true
+
+# - name: Install NodeJS
+#   hosts: all
+#   tasks:
 
 
 
