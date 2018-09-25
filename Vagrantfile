@@ -45,7 +45,11 @@ Vagrant.configure("2") do |config|
   # the path on the host to the actual folder. The second argument is
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
-  config.vm.synced_folder "../", "/code"
+  config.vm.synced_folder "../", "/code", id: "vagrant-code",
+    owner: "vagrant",
+    group: "vagrant",
+    mount_options: ["dmode=775,fmode=664"] # This is importante to avoid having directories with world-writable permissions. Ansible, for example, don't like to read ansible.cfg files from world writable directories
+
   config.vm.synced_folder "~/.ssh", "/ssh"
 
   # Provider-specific configuration so you can fine-tune various
