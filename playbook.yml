@@ -99,6 +99,18 @@
         state: restarted
         enabled: true
 
-
-
+- name: Install Tsuru client for 1.4
+  hosts: all
+  vars:
+    tsuru_temp_zip_path: /tmp/tsuruclient.zip
+  tasks:
+    - name: fetch Tsuru client
+      get_url:
+        url: https://github.com/tsuru/tsuru-client/releases/download/1.4.0/tsuru_1.4.0_linux_amd64.tar.gz
+        dest: "{{ tsuru_temp_zip_path }}"
+    - name: Unzip tsuru client binary
+      unarchive:
+        src: "{{ tsuru_temp_zip_path }}"
+        dest: /usr/local/bin
+        remote_src: yes
 
