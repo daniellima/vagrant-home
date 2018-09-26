@@ -24,7 +24,7 @@
         - nodejs
         - npm
 
-- name: Bring private and public keys from the host to the guest
+- name: Bring ssh configuration and keys from the host to the guest
   hosts: all
   tasks:
     - name: copy key files to the guest
@@ -38,6 +38,7 @@
       loop:
         - id_rsa
         - id_rsa.pub
+        - config
 
 
 - name: Configure python3 on CentOS
