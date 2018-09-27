@@ -48,7 +48,7 @@ Vagrant.configure("2") do |config|
   config.vm.synced_folder "../", "/code", id: "vagrant-code",
     owner: "vagrant",
     group: "vagrant",
-    mount_options: ["dmode=775,fmode=664"] # This is importante to avoid having directories with world-writable permissions. Ansible, for example, don't like to read ansible.cfg files from world writable directories
+    mount_options: ["dmode=775,fmode=774"] # This is importante to avoid having directories with world-writable permissions. Ansible, for example, don't like to read ansible.cfg files from world writable directories
 
   config.vm.synced_folder "~/.ssh", "/ssh"
 
