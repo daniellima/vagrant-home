@@ -23,6 +23,8 @@
         - docker
         - nodejs
         - npm
+        - https://packages.microsoft.com/config/rhel/7/packages-microsoft-prod.rpm
+        - dotnet-sdk-2.1
 
 - name: Bring ssh configuration and keys from the host to the guest
   hosts: all
