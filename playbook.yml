@@ -23,6 +23,8 @@
         - docker
         - nodejs
         - npm
+        - htop
+        - tmux
         - https://packages.microsoft.com/config/rhel/7/packages-microsoft-prod.rpm
         - dotnet-sdk-2.1
 
