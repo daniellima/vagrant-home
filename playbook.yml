@@ -28,6 +28,7 @@
         - https://packages.microsoft.com/config/rhel/7/packages-microsoft-prod.rpm
         - dotnet-sdk-2.1
         - nc
+        - java-1.8.0-openjdk
 
 - name: Bring ssh configuration and keys from the host to the guest
   hosts: all
@@ -120,3 +121,15 @@
         dest: /usr/local/bin
         remote_src: yes
 
+- name: Install The BFG  # a repo cleaning tool
+  hosts: all
+  tasks:
+    - name: fetch The BFG .jar
+      get_url:
+        url: https://repo1.maven.org/maven2/com/madgag/bfg/1.13.0/bfg-1.13.0.jar
+        dest: /usr/local/bin
+    - name: add alias to execute bfg easier
+      lineinfile:
+        path: /home/vagrant/.bashrc
+        line: "alias bfg='java -jar /usr/local/bin/bfg-1.13.0.jar'"
+      
