@@ -29,6 +29,7 @@
         - dotnet-sdk-2.1
         - nc
         - java-1.8.0-openjdk
+        - lsof
 
 - name: Bring ssh configuration and keys from the host to the guest
   hosts: all
