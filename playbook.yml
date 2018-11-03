@@ -31,6 +31,7 @@
         - nc
         - java-1.8.0-openjdk
         - lsof
+        - traceroute
 
 - name: Bring ssh configuration and keys from the host to the guest
   hosts: all
