@@ -25,6 +25,7 @@
         - npm
         - htop
         - tmux
+        - psmisc
         - https://packages.microsoft.com/config/rhel/7/packages-microsoft-prod.rpm
         - dotnet-sdk-2.1
         - nc
