@@ -19,6 +19,7 @@
         - python36
         - python
         - python-pip
+        - python-devel # Some python packages require it, because they are build locally
         - unzip
         - docker
         - nodejs
@@ -32,6 +33,7 @@
         - java-1.8.0-openjdk
         - lsof
         - traceroute
+        - bind-utils
 
 - name: Bring ssh configuration and keys from the host to the guest
   hosts: all
