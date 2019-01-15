@@ -34,6 +34,7 @@
         - lsof
         - traceroute
         - bind-utils
+        - telnet
 
 - name: Bring ssh configuration and keys from the host to the guest
   hosts: all
