@@ -77,7 +77,7 @@
   tasks:
     - name: fetch Terraform
       get_url:
-        url: https://releases.hashicorp.com/terraform/0.11.8/terraform_0.11.8_linux_amd64.zip
+        url: https://releases.hashicorp.com/terraform/0.11.11/terraform_0.11.11_linux_amd64.zip
         dest: "{{ terraform_temp_zip_path }}"
     - name: Unzip terraform binary
       unarchive:
