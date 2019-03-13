@@ -172,6 +172,28 @@
         path: /home/vagrant/.bashrc
         line: "alias bfg='java -jar /usr/local/bin/bfg-1.13.0.jar'"
 
+- name: Install Google Cloud SDK
+  hosts: all
+  tasks:
+    - name: Install SDK repository
+      yum_repository:
+        name: google-cloud-sdk
+        description: Google Cloud SDK
+        baseurl: https://packages.cloud.google.com/yum/repos/cloud-sdk-el7-x86_64
+        enabled: yes
+        gpgcheck: yes
+        repo_gpgcheck: yes
+        # The indentation is important, as described by https://cloud.google.com/sdk/docs/quickstart-redhat-centos
+        gpgkey: |
+          https://packages.cloud.google.com/yum/doc/yum-key.gpg
+           https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+        file: google-cloud-sdk
+    - name: Install Google Cloud SDK
+      package:
+        name: google-cloud-sdk
+        state: present
+
+
 - name: Install Azure CLI
   hosts: all
   tasks:
