@@ -51,7 +51,17 @@
         - id_rsa
         - id_rsa.pub
         - config
-
+    - name: copy ssh-agent startup script to home folder
+      copy:
+        src: start_ssh-agent.sh
+        dest: /home/vagrant/start_ssh-agent.sh
+        mode: 0644
+        owner: vagrant
+        group: vagrant
+    - name: add ssh-agent startup script to .bashrc
+      lineinfile:
+        path: /home/vagrant/.bashrc
+        line: "source /home/vagrant/start_ssh-agent.sh"
 
 - name: Configure python3 on CentOS
   hosts: all
