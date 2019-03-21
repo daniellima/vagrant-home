@@ -36,7 +36,7 @@
         - bind-utils
         - telnet
 
-- name: Bring ssh configuration and keys from the host to the guest
+- name: Bring ssh configuration and keys from the host to the guest and do further configuration
   hosts: all
   tasks:
     - name: copy key files to the guest
