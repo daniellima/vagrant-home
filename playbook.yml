@@ -63,6 +63,21 @@
         path: /home/vagrant/.bashrc
         line: "source /home/vagrant/start_ssh-agent.sh"
 
+- name: Configure usefull shell alias
+  hosts: all
+  tasks:
+    - name: Add git alias script
+      copy:
+        src: git_alias.sh
+        dest: /home/vagrant/git_alias.sh
+        mode: 0664
+        owner: vagrant
+        group: vagrant
+    - name: Add git alias script to .bashrc
+      lineinfile:
+        path: /home/vagrant/.bashrc
+        line: "source /home/vagrant/git_alias.sh"
+
 - name: Configure python3 on CentOS
   hosts: all
   tasks:
