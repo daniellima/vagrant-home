@@ -14,7 +14,6 @@
         name: "{{ item }}"
         state: present
       loop:
-        - git
         - epel-release
         - python36
         - python
@@ -35,6 +34,20 @@
         - traceroute
         - bind-utils
         - telnet
+
+- name: Install latest version of git
+  hosts: all
+  tasks:
+    - name: Adds IUS repository
+      package:
+        name: 
+          - https://centos7.iuscommunity.org/ius-release.rpm
+        state: present
+    - name: Install Git package from IUS
+      package:
+        name: 
+          - git2u-all
+        state: present
 
 - name: Bring ssh configuration and keys from the host to the guest and do further configuration
   hosts: all
