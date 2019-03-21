@@ -62,6 +62,10 @@
       lineinfile:
         path: /home/vagrant/.bashrc
         line: "source /home/vagrant/start_ssh-agent.sh"
+    - name: configure ssh to add key if not available
+      lineinfile:
+        path: /home/vagrant/.ssh/config
+        line: "AddKeysToAgent  yes"
 
 - name: Configure usefull shell alias
   hosts: all
