@@ -3,7 +3,7 @@
 # In latest windows versions, it's probably "$HOME\Documents\WindowsPowerShell"
 
 Function home {
-    ssh home -t "cd /code/$(Split-Path -Path . -Leaf); bash -li"
+    ssh home -t "cd /code/$(Split-Path -Path . -Leaf); zsh -li"
 }
 Function homeup {
     cd $HOME/code/vagrant-home

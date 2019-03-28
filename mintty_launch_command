@@ -1,1 +1,1 @@
-"C:\Program Files\Git\usr\bin\mintty.exe" -T "mintty>" -w full --exec "/usr/bin/bash" -l -i -c "ssh home -t 'cd /code && bash -li'"
+"C:\Program Files\Git\usr\bin\mintty.exe" -T "mintty>" -w full --exec "/usr/bin/bash" -l -i -c "ssh home -t 'cd /code && zsh -li'"

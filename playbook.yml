@@ -33,6 +33,9 @@
         - traceroute
         - bind-utils
         - telnet
+        - man-pages 
+        - man-db 
+        - man
 
 - name: Setup IUS repo
   hosts: all
@@ -43,13 +46,16 @@
           - https://centos7.iuscommunity.org/ius-release.rpm
         state: present
 
-- name: Install Git package from IUS
+- name: Install Git
   hosts: all
   tasks:
-    - package:
+    - name: Get git package from IUS
+      package:
         name: 
           - git2u-all
         state: present
+    - name: Remove the use of less as pager
+      shell: git config --global core.pager cat
 
 - name: Install Tmux package from IUS
   hosts: all
@@ -59,7 +65,6 @@
           - tmux2u
         state: present
 
-
 - name: Install and configure ZSH
   hosts: all
   tasks:
@@ -67,29 +72,38 @@
         name: 
           - zsh
         state: present
+    - name: Change default shell to be ZSH
+      user:
+        name: vagrant
+        shell: /bin/zsh
+    - name: Download oh-my-zsh
+      get_url:
+        url: https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh
+        dest: "/home/vagrant/install_oh_my_zsh.sh"
+        mode: u+x
+        owner: vagrant
+        group: vagrant
+    - name: Install Oh My ZSH
+      become_user: vagrant
+      shell: 
+        cmd: /home/vagrant/install_oh_my_zsh.sh
+        creates: /home/vagrant/.oh-my-zsh
     - name: Copy .zshrc
       copy:
-        src: .zshrc
-        dest: /home/vagrant/.zshrc
+        src: user_zsh_conf.sh
+        dest: /home/vagrant/user_zsh_conf.sh
         mode: 0644
         owner: vagrant
         group: vagrant
-    # - name: Change default shell to be ZSH
-    #   user:
-    #     name: vagrant
-    #     shell: /bin/zsh
-    # - name: Download oh-my-zsh
-    #   get_url:
-    #     url: https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh
-    #     dest: "/home/vagrant/install_oh_my_zsh.sh"
-    #     mode: u+x
-    #     owner: vagrant
-    #     group: vagrant
-    # - name: Install Oh My ZSH
-    #   become_user: vagrant
-    #   shell: 
-    #     cmd: /home/vagrant/install_oh_my_zsh.sh
-    #     creates: /home/vagrant/.oh-my-zsh
+    - name: add my custom configurations to ZSH
+      lineinfile:
+        path: /home/vagrant/.zshrc
+        line: "source /home/vagrant/user_zsh_conf.sh"
+    - name: Configure theme
+      lineinfile:
+        path: /home/vagrant/.zshrc
+        regexp: '^ZSH_THEME='
+        line: 'ZSH_THEME="robbyrussell"'
 
 - name: Bring ssh configuration and keys from the host to the guest and do further configuration
   hosts: all
