@@ -74,6 +74,22 @@
         mode: 0644
         owner: vagrant
         group: vagrant
+    # - name: Change default shell to be ZSH
+    #   user:
+    #     name: vagrant
+    #     shell: /bin/zsh
+    # - name: Download oh-my-zsh
+    #   get_url:
+    #     url: https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh
+    #     dest: "/home/vagrant/install_oh_my_zsh.sh"
+    #     mode: u+x
+    #     owner: vagrant
+    #     group: vagrant
+    # - name: Install Oh My ZSH
+    #   become_user: vagrant
+    #   shell: 
+    #     cmd: /home/vagrant/install_oh_my_zsh.sh
+    #     creates: /home/vagrant/.oh-my-zsh
 
 - name: Bring ssh configuration and keys from the host to the guest and do further configuration
   hosts: all
