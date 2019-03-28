@@ -24,7 +24,6 @@
         - nodejs
         - npm
         - htop
-        - tmux
         - psmisc
         - https://packages.microsoft.com/config/rhel/7/packages-microsoft-prod.rpm
         - dotnet-sdk-2.1
@@ -35,7 +34,7 @@
         - bind-utils
         - telnet
 
-- name: Install latest version of git
+- name: Setup IUS repo
   hosts: all
   tasks:
     - name: Adds IUS repository
@@ -43,10 +42,21 @@
         name: 
           - https://centos7.iuscommunity.org/ius-release.rpm
         state: present
-    - name: Install Git package from IUS
-      package:
+
+- name: Install Git package from IUS
+  hosts: all
+  tasks:
+    - package:
         name: 
           - git2u-all
+        state: present
+
+- name: Install Tmux package from IUS
+  hosts: all
+  tasks:
+    - package:
+        name: 
+          - tmux2u
         state: present
 
 - name: Bring ssh configuration and keys from the host to the guest and do further configuration
