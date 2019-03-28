@@ -59,6 +59,22 @@
           - tmux2u
         state: present
 
+
+- name: Install and configure ZSH
+  hosts: all
+  tasks:
+    - package:
+        name: 
+          - zsh
+        state: present
+    - name: Copy .zshrc
+      copy:
+        src: .zshrc
+        dest: /home/vagrant/.zshrc
+        mode: 0644
+        owner: vagrant
+        group: vagrant
+
 - name: Bring ssh configuration and keys from the host to the guest and do further configuration
   hosts: all
   tasks:
@@ -81,9 +97,9 @@
         mode: 0644
         owner: vagrant
         group: vagrant
-    - name: add ssh-agent startup script to .bashrc
+    - name: add ssh-agent startup script to .zshrc
       lineinfile:
-        path: /home/vagrant/.bashrc
+        path: /home/vagrant/.zshrc
         line: "source /home/vagrant/start_ssh-agent.sh"
     - name: configure ssh to add key if not available
       lineinfile:
@@ -100,9 +116,9 @@
         mode: 0664
         owner: vagrant
         group: vagrant
-    - name: Add git alias script to .bashrc
+    - name: Add git alias script to .zshrc
       lineinfile:
-        path: /home/vagrant/.bashrc
+        path: /home/vagrant/.zshrc
         line: "source /home/vagrant/git_alias.sh"
 
 - name: Configure python3 on CentOS
@@ -113,7 +129,7 @@
 
     - name: add aliases for python3
       lineinfile:
-        path: /home/vagrant/.bashrc
+        path: /home/vagrant/.zshrc
         line: "{{ item }}"
       loop:
         - alias pip3='python36 -m pip'
@@ -221,7 +237,7 @@
         dest: /usr/local/bin
     - name: add alias to execute bfg easier
       lineinfile:
-        path: /home/vagrant/.bashrc
+        path: /home/vagrant/.zshrc
         line: "alias bfg='java -jar /usr/local/bin/bfg-1.13.0.jar'"
 
 - name: Install Google Cloud SDK
