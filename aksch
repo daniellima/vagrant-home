@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+IFS=$'\n'      # Change IFS to new line
+clusters=($(az aks list --query "[].name" -o tsv | sort))
+
+index=0
+for cluster in ${clusters[*]};
+do
+   index=$(( index+1 ));
+   echo "$index) $cluster";
+done
+
+printf "Choice a number: "
+read -r choice
+
+echo "Changing to cluster ${clusters[choice-1]}..."
+resource_group=$(az aks list --query "[$((choice-1))].resourceGroup" -o tsv)
+az aks get-credentials -n ${clusters[choice-1]} -g ${resource_group} --overwrite
+echo "Done"

@@ -151,6 +151,18 @@
         path: /home/vagrant/.zshrc
         line: "source /home/vagrant/git_alias.sh"
 
+- name: Install quick switchers
+  hosts: all
+  tasks:
+    - copy:
+        src: "{{ item }}"
+        dest: /usr/local/bin
+        mode: o+x
+      with_items:
+        - aksch
+        - azch
+        - kch
+
 - name: Configure python3 on CentOS
   hosts: all
   tasks:
