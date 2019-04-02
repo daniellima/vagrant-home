@@ -150,6 +150,17 @@
       lineinfile:
         path: /home/vagrant/.zshrc
         line: "source /home/vagrant/git_alias.sh"
+    - name: Add kubernetes alias script
+      copy:
+        src: kubernetes_alias.sh
+        dest: /home/vagrant
+        mode: 0664
+        owner: vagrant
+        group: vagrant
+    - name: Add kubernetes alias script to .zshrc
+      lineinfile:
+        path: /home/vagrant/.zshrc
+        line: "source /home/vagrant/kubernetes_alias.sh"
 
 - name: Install quick switchers
   hosts: all
