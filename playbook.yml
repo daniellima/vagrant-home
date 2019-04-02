@@ -36,6 +36,7 @@
         - man-pages 
         - man-db 
         - man
+        - vim-enhanced
 
 - name: Setup IUS repo
   hosts: all
