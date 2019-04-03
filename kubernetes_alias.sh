@@ -1,7 +1,6 @@
 alias k="kubectl $*"
 alias kg="kubectl get $* -o wide"
 alias kd="kubectl describe $*"
-alias kl="kubectl log pod $*"
 
 resources=(ingress service deployment replicaset pod node)
 shortcuts=(i s d r p n)
