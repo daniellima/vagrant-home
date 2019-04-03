@@ -15,5 +15,5 @@ read -r choice
 
 echo "Changing to cluster ${clusters[choice-1]}..."
 resource_group=$(az aks list --query "[$((choice-1))].resourceGroup" -o tsv)
-az aks get-credentials -n ${clusters[choice-1]} -g ${resource_group} --overwrite
+az aks get-credentials -n ${clusters[choice-1]} -g ${resource_group} --overwrite $1
 echo "Done"
