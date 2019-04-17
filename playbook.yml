@@ -9,6 +9,10 @@
         port: 443
         timeout: 3
 
+    - name: set my timezone
+      timezone:
+        name: America/Sao_Paulo
+
     - name: install packages
       package:
         name: "{{ item }}"
