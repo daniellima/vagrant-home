@@ -58,13 +58,21 @@
     - name: Remove the use of less as pager
       shell: git config --global core.pager cat
 
-- name: Install Tmux package from IUS
+- name: Install and Configure Tmux
   hosts: all
   tasks:
-    - package:
+    - name: Install tmux package from IUS
+      package:
         name: 
           - tmux2u
         state: present
+    - name: Set up tmux.conf
+      copy:
+        src: .tmux.conf
+        dest: /home/vagrant/.tmux.conf
+        mode: 0644
+        owner: vagrant
+        group: vagrant
 
 - name: Install and configure ZSH
   hosts: all
