@@ -366,4 +366,8 @@
     - name: Add Go binaries to PATH
       lineinfile:
         path: /home/vagrant/.zshrc
-        line: "PATH=/usr/local/go/bin:$PATH"
+        line: "export PATH=/usr/local/go/bin:$PATH"
+    - name: Set GOPATH
+      lineinfile:
+        path: /home/vagrant/.zshrc
+        line: "export GOPATH=/code/go"
