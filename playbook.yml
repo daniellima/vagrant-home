@@ -13,34 +13,37 @@
       timezone:
         name: America/Sao_Paulo
 
-    - name: install packages
-      package:
-        name: "{{ item }}"
+    - name: install repos
+      yum:
+        name: https://packages.microsoft.com/config/rhel/7/packages-microsoft-prod.rpm
         state: present
-      loop:
-        - epel-release
-        - python36
-        - python
-        - python-pip
-        - python-devel # Some python packages require it, because they are build locally
-        - unzip
-        - docker
-        - nodejs
-        - npm
-        - htop
-        - psmisc
-        - https://packages.microsoft.com/config/rhel/7/packages-microsoft-prod.rpm
-        - dotnet-sdk-2.1
-        - nc
-        - java-1.8.0-openjdk
-        - lsof
-        - traceroute
-        - bind-utils
-        - telnet
-        - man-pages 
-        - man-db 
-        - man
-        - vim-enhanced
+
+    - name: install packages
+      yum:
+        name:
+          - epel-release
+          - python36
+          - python
+          - python-pip
+          - python-devel # Some python packages require it, because they are build locally
+          - unzip
+          - docker
+          - nodejs
+          - npm
+          - htop
+          - psmisc
+          - dotnet-sdk-2.1
+          - nc
+          - java-1.8.0-openjdk
+          - lsof
+          - traceroute
+          - bind-utils
+          - telnet
+          - man-pages 
+          - man-db 
+          - man
+          - vim-enhanced
+        state: present
 
 - name: Setup IUS repo
   hosts: all
@@ -284,27 +287,31 @@
 
 - name: Install kubectl
   hosts: all
+  vars:
+    - filename: kubectl
   tasks:
     - name: Download kubectl
       get_url:
-        url: https://storage.googleapis.com/kubernetes-release/release/v1.13.0/bin/linux/amd64/kubectl
-        dest: /usr/local/bin
+        url: https://storage.googleapis.com/kubernetes-release/release/v1.13.0/bin/linux/amd64/{{ filename }}
+        dest: /usr/local/bin/{{ filename }}
     - name: Make kubectl executable
       file:
-        path: /usr/local/bin/kubectl
+        path: /usr/local/bin/{{ filename }}
         mode: 0755
 
 - name: Install The BFG  # a repo cleaning tool
   hosts: all
+  vars:
+    - filename: bfg-1.13.0.jar
   tasks:
     - name: fetch The BFG .jar
       get_url:
-        url: https://repo1.maven.org/maven2/com/madgag/bfg/1.13.0/bfg-1.13.0.jar
-        dest: /usr/local/bin
+        url: https://repo1.maven.org/maven2/com/madgag/bfg/1.13.0/{{ filename }}
+        dest: /usr/local/bin/{{ filename }}
     - name: add alias to execute bfg easier
       lineinfile:
         path: /home/vagrant/.zshrc
-        line: "alias bfg='java -jar /usr/local/bin/bfg-1.13.0.jar'"
+        line: "alias bfg='java -jar /usr/local/bin/{{ filename }}'"
 
 - name: Install Google Cloud SDK
   hosts: all
@@ -352,17 +359,18 @@
 - name: Install Go
   hosts: all
   vars:
-    - go_tarball: go1.12.4.linux-amd64.tar.gz
+    - filename: go1.12.4.linux-amd64.tar.gz
   tasks:
     - name: Download tarball
       get_url:
-        url: "https://dl.google.com/go/{{ go_tarball }}"
-        dest: /tmp
+        url: "https://dl.google.com/go/{{ filename }}"
+        dest: /tmp/{{ filename }}
     - name: Extract Go
       unarchive:
-        src: "/tmp/{{ go_tarball }}"
+        src: "/tmp/{{ filename }}"
         dest: /usr/local
         remote_src: yes
+        creates: /usr/local/go
     - name: Add Go binaries to PATH
       lineinfile:
         path: /home/vagrant/.zshrc

@@ -14,6 +14,7 @@ Vagrant.configure("2") do |config|
   # boxes at https://vagrantcloud.com/search.
   config.vm.box = "bento/centos-7.6"
   config.vm.box_version = "201812.27.0"
+  config.vm.box_check_update = false
   config.vm.define "home"
   config.vm.hostname = "home"
 
