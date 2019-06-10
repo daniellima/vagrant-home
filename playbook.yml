@@ -207,20 +207,31 @@
     - name: install pipenv
       command: 'python36 -m pip install pipenv'
 
-- name: Install Terraform
+- name: Install tfenv
   hosts: all
   vars:
-    terraform_temp_zip_path: /tmp/terraform.zip
+    tfenv_download_path: /home/vagrant/.tfenv
   tasks:
-    - name: fetch Terraform
-      get_url:
-        url: https://releases.hashicorp.com/terraform/0.11.13/terraform_0.11.13_linux_amd64.zip
-        dest: "{{ terraform_temp_zip_path }}"
-    - name: Unzip terraform binary
-      unarchive:
-        src: "{{ terraform_temp_zip_path }}"
-        dest: /usr/local/bin
-        remote_src: yes
+    - name: Clone tfenv repository
+      git:
+        repo: 'https://github.com/tfutils/tfenv.git'
+        dest: "{{ tfenv_download_path }}"
+        version: v1.0.0
+    - name: Give permissions to vagrant
+      file:
+        path: "{{ tfenv_download_path }}"
+        mode: 0755
+        owner: vagrant
+        group: vagrant
+    - name: Install tfenv
+      file:
+        src: "{{ tfenv_download_path }}/bin/{{ item }}"
+        dest: /usr/local/bin/{{ item }}
+        state: link
+      loop:
+        - tfenv
+        - terraform
+
 
 - name: Configure docker
   hosts: all
