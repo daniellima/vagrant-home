@@ -7,6 +7,9 @@ HIST_STAMPS="yyyy-mm-dd"
 HIST_FORMAT="%Y-%m-%d %T:  "
 alias history="fc -t \"$HIST_FORMAT\" -il 1"
 
+# Removes all beeps (https://blog.vghaisas.com/zsh-beep-sound/)
+unsetopt BEEP
+
 # Custom keybindings
 bindkey -M emacs '^[[H' beginning-of-line # Ctrl+Home
 bindkey -M emacs '^[[F' end-of-line # Ctrl+End
