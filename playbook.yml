@@ -150,7 +150,7 @@
     - name: configure ssh to add key if not available
       lineinfile:
         path: /home/vagrant/.ssh/config
-        line: "AddKeysToAgent  yes"
+        line: "\nHost *\n  AddKeysToAgent  yes"
 
 - name: Configure usefull shell alias
   hosts: all
