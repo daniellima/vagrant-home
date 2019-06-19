@@ -27,7 +27,6 @@
           - python-pip
           - python-devel # Some python packages require it, because they are build locally
           - unzip
-          - docker
           - nodejs
           - npm
           - htop
@@ -233,9 +232,24 @@
         - terraform
 
 
-- name: Configure docker
+- name: Install docker
   hosts: all
   tasks:
+    - name: install requirements for devicemapper storage
+      yum:
+        name:
+          - device-mapper-persistent-data
+          - lvm2
+    - name: install repos
+      shell: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo 
+      args:
+        creates: /etc/yum.repos.d/docker-ce.repo
+    - name: install docker
+      yum:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
     - name: add docker group
       group:
         name: docker
@@ -244,16 +258,21 @@
         name: vagrant
         groups: docker
         append: yes
-    - name: Get docker daemon.json file
-      set_fact:
-        docker_config: "{{ lookup('file', '/etc/docker/daemon.json')|from_json }}"
-    - name: Set new bip to docker config
-      set_fact:
-        docker_config: "{{ docker_config|combine({'bip': '192.168.1.5/24'}) }}"
-    - name: Dump new configuration
+    # - name: Get docker daemon.json file
+    #   set_fact:
+    #     docker_config: "{{ lookup('file', '/etc/docker/daemon.json')|from_json }}"
+    # - name: Set new bip to docker config
+    #   set_fact:
+    #     docker_config: "{{ docker_config|combine({'bip': '192.168.1.5/24'}) }}"
+    # - name: Dump new configuration
+    #   copy:
+    #     content: "{{ docker_config | to_nice_json }}"
+    #     dest: /etc/docker/daemon.json
+    - name: Add docker.json
       copy:
-        content: "{{ docker_config | to_nice_json }}"
+        src: daemon.json
         dest: /etc/docker/daemon.json
+        remote_src: yes
     - name: Enable docker on systemd
       service:
         name: docker
@@ -344,7 +363,10 @@
       package:
         name: google-cloud-sdk
         state: present
-
+    - name: Add GCP credential helper for docker
+      shell: gcloud auth configure-docker
+      become: yes
+      become_user: vagrant
 
 - name: Install Azure CLI
   hosts: all
