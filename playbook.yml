@@ -412,3 +412,28 @@
       lineinfile:
         path: /home/vagrant/.zshrc
         line: "export GOPATH=/code/go"
+
+- name: Install N (Node Version Manager)
+  hosts: all
+  become_user: vagrant
+  vars:
+    - n_folder: /home/vagrant/n
+  tasks:
+    - name: Install N using npm
+      npm:
+        name: n
+        global: yes
+    - name: Set N_PREFIX
+      lineinfile:
+        path: /home/vagrant/.zshrc
+        line: "export N_PREFIX={{ n_folder }}"
+    - name: Add downloaded node versions to PATH
+      lineinfile:
+        path: /home/vagrant/.zshrc
+        line: "export PATH=$N_PREFIX/bin:$PATH"
+    - name: Install LTS node version
+      shell: "n lts"
+      register: output
+      environment: 
+        N_PREFIX: "{{ n_folder }}"
+      changed_when: "'installed' in output.stdout"
