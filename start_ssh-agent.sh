@@ -11,6 +11,7 @@ function start_agent {
 # Source SSH settings, if applicable
 
 if [ -f "${SSH_ENV}" ]; then
+    echo "Found ssh-agent environment. Finding current agent..."
     . "${SSH_ENV}" > /dev/null
     #ps ${SSH_AGENT_PID} doesn't work under cywgin
     ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent > /dev/null || {
@@ -18,5 +19,6 @@ if [ -f "${SSH_ENV}" ]; then
         start_agent;
     }
 else
+    echo "Could not find ssh-agent running."
     start_agent;
 fi
