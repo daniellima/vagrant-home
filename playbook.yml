@@ -258,16 +258,10 @@
         name: vagrant
         groups: docker
         append: yes
-    # - name: Get docker daemon.json file
-    #   set_fact:
-    #     docker_config: "{{ lookup('file', '/etc/docker/daemon.json')|from_json }}"
-    # - name: Set new bip to docker config
-    #   set_fact:
-    #     docker_config: "{{ docker_config|combine({'bip': '192.168.1.5/24'}) }}"
-    # - name: Dump new configuration
-    #   copy:
-    #     content: "{{ docker_config | to_nice_json }}"
-    #     dest: /etc/docker/daemon.json
+    - name: Create docker dir
+      file:
+        path: /etc/docker
+        state: directory
     - name: Add docker.json
       copy:
         src: daemon.json
@@ -415,7 +409,6 @@
 
 - name: Install N (Node Version Manager)
   hosts: all
-  become_user: vagrant
   vars:
     - n_folder: /home/vagrant/n
   tasks:
