@@ -42,6 +42,18 @@
           - man-db 
           - man
           - vim-enhanced
+          # Pyenv recommendations necessary to install python
+          - zlib-devel 
+          - bzip2 
+          - bzip2-devel 
+          - readline-devel 
+          - sqlite
+          - sqlite-devel
+          - openssl-devel
+          - xz
+          - xz-devel
+          - libffi-devel
+          - findutils
         state: present
 
 - name: Setup IUS repo
@@ -430,3 +442,28 @@
       environment: 
         N_PREFIX: "{{ n_folder }}"
       changed_when: "'installed' in output.stdout"
+
+- name: Install pyenv
+  hosts: all
+  vars:
+    pyenv_download_path: /home/vagrant/.pyenv
+  tasks:
+    - name: Clone pyenv repository
+      git:
+        repo: 'https://github.com/pyenv/pyenv.git'
+        dest: "{{ pyenv_download_path }}"
+        version: v1.2.13
+      become: yes
+      become_user: vagrant
+    - name: Set PYENV_ROOT
+      lineinfile:
+        path: /home/vagrant/.zshrc
+        line: "export PYENV_ROOT=\"$HOME/.pyenv\""
+    - name: Set PATH to use pyenv shims
+      lineinfile:
+        path: /home/vagrant/.zshrc
+        line: "export PATH=\"$PYENV_ROOT/bin:$PATH\""
+    - name: Initialize pyenv
+      lineinfile:
+        path: /home/vagrant/.zshrc
+        line: "eval \"$(pyenv init -)\""
