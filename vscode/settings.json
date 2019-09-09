@@ -1,0 +1,16 @@
+{
+    "workbench.editor.enablePreview": false,
+    "workbench.editor.enablePreviewFromQuickOpen": false,
+    "files.eol": "\n",
+    "window.zoomLevel": 0,
+    "python.venvPath": "C:\\Users\\daniel.santos\\.virtualenvs",
+    "terminal.integrated.shell.linux": "/usr/bin/zsh",
+
+    "terraform.indexing": {
+        "enabled": false,
+        "liveIndexing": false,
+        "exclude": ["**/*"]
+    },
+    "explorer.autoReveal": false,
+    "python.terminal.activateEnvironment": false
+}
